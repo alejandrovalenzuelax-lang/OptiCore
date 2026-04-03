@@ -1,0 +1,96 @@
+# Roles de usuario
+
+## Objetivo del documento
+
+Definir los roles iniciales del sistema y sus responsabilidades generales dentro de OptiCore.
+
+---
+
+## 1. Principios generales
+
+- cada usuario pertenece a una óptica
+- los permisos deben limitar el acceso a la información según el rol
+- la primera versión debe mantener roles simples y claros
+- el sistema debe poder crecer a permisos más específicos en el futuro
+
+---
+
+## 2. Roles iniciales
+
+### 2.1 Dueña o administrador de óptica
+Es la persona responsable del negocio y con mayor nivel de acceso dentro de su óptica.
+
+Permisos generales:
+- gestionar usuarios de su óptica
+- ver pacientes
+- ver expedientes
+- crear y editar expedientes
+- ver inventario
+- crear y editar productos
+- ver ventas
+- registrar ventas
+- consultar anticipos y saldos
+- ver citas
+- crear y editar citas
+- actualizar información general de la óptica
+
+### 2.2 Empleado de mostrador
+Es la persona encargada de atención general, registro y ventas.
+
+Permisos generales:
+- iniciar sesión
+- consultar pacientes
+- registrar pacientes
+- editar información básica de pacientes
+- consultar inventario
+- registrar ventas
+- registrar anticipos
+- consultar saldos
+- consultar citas
+- crear citas
+- registrar entregas si el negocio lo permite
+
+Restricciones sugeridas:
+- no gestionar usuarios
+- no modificar configuración sensible
+- no editar reglas globales del sistema
+
+### 2.3 Optometrista
+Es la persona que realiza o registra la parte clínica de la atención.
+
+Permisos generales:
+- consultar pacientes
+- crear expedientes
+- editar expedientes
+- consultar historial clínico del paciente
+- registrar observaciones clínicas
+- consultar citas relacionadas con atención
+
+Restricciones sugeridas:
+- no gestionar usuarios
+- no modificar configuración administrativa
+- no alterar inventario salvo necesidad definida por negocio
+
+### 2.4 Administrador del sistema
+Es un rol técnico o de soporte con acceso amplio para mantenimiento.
+
+Permisos generales:
+- acceso total al sistema
+- mantenimiento técnico
+- soporte administrativo
+- gestión completa de configuración
+
+Nota:
+Este rol puede no ser visible en la operación diaria de la óptica, pero conviene contemplarlo desde el diseño.
+
+---
+
+## 3. Recomendación inicial de implementación
+
+Para el MVP se recomienda iniciar con tres roles funcionales:
+
+- admin_optica
+- empleado
+- optometrista
+
+Y agregar un rol técnico superior solo si realmente se necesita durante el desarrollo o administración.
