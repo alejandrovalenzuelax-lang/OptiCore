@@ -2,4 +2,5 @@ from django.apps import AppConfig
 
 
 class OpticsConfig(AppConfig):
-    name = 'optics'
+    default_auto_field = "django.db.models.BigAutoField"
+    name = 'apps.optics'
