@@ -1,0 +1,132 @@
+# Roadmap inicial del proyecto
+
+## Objetivo del documento
+
+Organizar el desarrollo de OptiCore por fases, priorizando utilidad real, aprendizaje técnico y estructura limpia.
+
+---
+
+## Fase 0 - Planeación y documentación
+Objetivo:
+Definir el producto antes de construirlo.
+
+Incluye:
+- visión del proyecto
+- requerimientos
+- glosario
+- modelo de datos
+- alcance MVP
+- reglas de negocio
+- flujos de usuario
+- roadmap
+
+---
+
+## Fase 1 - Base técnica del backend
+Objetivo:
+Levantar el proyecto backend y dejar estructura base sólida.
+
+Incluye:
+- creación del proyecto Django
+- configuración de entorno
+- conexión a PostgreSQL
+- configuración inicial de apps
+- modelo de usuario o estrategia de autenticación
+- configuración inicial de Django REST Framework
+
+---
+
+## Fase 2 - Módulo de usuarios y óptica
+Objetivo:
+Permitir acceso y estructura organizativa básica.
+
+Incluye:
+- modelo de óptica
+- modelo de usuario
+- roles iniciales
+- login y logout
+- permisos básicos
+
+---
+
+## Fase 3 - Módulo de pacientes
+Objetivo:
+Registrar y consultar pacientes.
+
+Incluye:
+- modelo de paciente
+- endpoints básicos
+- validaciones principales
+- búsqueda y consulta
+
+---
+
+## Fase 4 - Módulo de expedientes
+Objetivo:
+Digitalizar el formato clínico principal del negocio.
+
+Incluye:
+- modelo de expediente
+- captura de RX anterior y actual
+- historial visual y médico
+- observaciones
+- asociación con paciente y usuarios relacionados
+
+---
+
+## Fase 5 - Módulo de inventario
+Objetivo:
+Crear control básico de productos.
+
+Incluye:
+- modelo de producto
+- categorías
+- stock
+- precios
+- operaciones de alta y edición
+
+---
+
+## Fase 6 - Módulo de ventas
+Objetivo:
+Registrar operaciones comerciales reales.
+
+Incluye:
+- modelo de venta
+- detalle de venta
+- total, anticipo y saldo
+- método de pago
+- fecha de entrega
+- estatus
+
+---
+
+## Fase 7 - Frontend inicial
+Objetivo:
+Construir la primera interfaz operativa usable.
+
+Incluye:
+- setup de React
+- estructura base de navegación
+- vistas iniciales de login, pacientes, expedientes, inventario y ventas
+- conexión con la API del backend
+
+---
+
+## Fase 8 - Mejoras posteriores
+Objetivo:
+Expandir valor una vez que el flujo principal funcione.
+
+Incluye:
+- citas
+- dashboard simple
+- impresión/exportación
+- promociones
+- reparación
+- página pública de la óptica
+
+---
+
+## Meta general
+
+Lograr una primera versión funcional que pueda usarse en una óptica real y que, al mismo tiempo, sirva como base técnica sólida para iteraciones futuras.
