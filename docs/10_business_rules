@@ -1,0 +1,90 @@
+# Reglas de negocio iniciales
+
+## Objetivo del documento
+
+Definir reglas operativas y lógicas que deben respetarse en el diseño del sistema y en su implementación técnica.
+
+---
+
+## 1. Reglas generales
+
+- toda información operativa debe pertenecer a una óptica
+- un usuario solo puede acceder a la información de su óptica
+- los roles determinan qué acciones puede realizar cada usuario
+- los datos capturados deben ser consistentes con la operación real del negocio
+
+---
+
+## 2. Pacientes
+
+- un paciente pertenece a una sola óptica
+- un paciente puede tener múltiples expedientes
+- un paciente puede existir aunque todavía no tenga una venta registrada
+- un paciente debe poder buscarse por nombre y por teléfono
+- debe evitarse la duplicidad de pacientes cuando sea posible
+
+---
+
+## 3. Expedientes
+
+- un expediente pertenece a un solo paciente
+- un expediente pertenece a una sola óptica
+- un expediente puede registrar receta anterior y receta actual
+- un expediente puede existir sin venta inmediata
+- un expediente debe conservar historial clínico y observaciones
+- un expediente puede asociar a un optometrista y a un vendedor
+- la estructura inicial del expediente debe seguir de cerca el formato físico actual para facilitar adopción
+
+---
+
+## 4. Ventas
+
+- una venta pertenece a una sola óptica
+- una venta puede estar asociada a un paciente
+- una venta puede estar asociada a un expediente
+- una venta puede incluir uno o varios conceptos
+- una venta debe registrar total
+- una venta puede registrar anticipo
+- una venta debe reflejar saldo pendiente cuando no esté liquidada
+- el anticipo no puede ser negativo
+- el anticipo no debe ser mayor que el total
+- el saldo debe calcularse como total menos anticipo menos pagos adicionales si esos se implementan después
+- una venta debe tener un estatus básico, por ejemplo: pendiente, en proceso, entregada, cancelada
+
+---
+
+## 5. Inventario
+
+- un producto pertenece a una sola óptica
+- un producto debe clasificarse por categoría
+- un producto puede estar activo o inactivo
+- el inventario debe poder consultarse por categoría, nombre o marca
+- las ventas de productos inventariables deben impactar el stock cuando aplique
+- el stock no debe quedar negativo sin una decisión explícita del negocio
+
+---
+
+## 6. Citas
+
+- una cita pertenece a una sola óptica
+- una cita puede asociarse a un paciente
+- una cita debe tener fecha y hora
+- una cita debe tener al menos un estatus básico
+- una cita puede existir aunque no termine en venta
+
+---
+
+## 7. Usuarios
+
+- cada usuario pertenece a una sola óptica
+- un usuario debe tener un rol definido
+- usuarios inactivos no deben poder iniciar sesión
+- solo usuarios autorizados deben poder crear o editar otros usuarios
+
+---
+
+## 8. Escalabilidad futura
+
+- aunque el sistema inicie con una sola óptica, las reglas deben permitir múltiples ópticas sin mezclar datos
+- cualquier módulo nuevo debe respetar la separación por óptica
+- la arquitectura no debe asumir que solo existirá un negocio dentro del sistema
