@@ -1,0 +1,81 @@
+# Flujos de usuario iniciales
+
+## Objetivo del documento
+
+Describir los principales flujos operativos que el sistema debe soportar en la primera etapa.
+
+---
+
+## 1. Flujo: registrar paciente
+
+1. el usuario inicia sesión
+2. accede al módulo de pacientes
+3. selecciona la opción para crear un nuevo paciente
+4. captura la información básica del paciente
+5. guarda el registro
+6. el sistema confirma creación exitosa
+7. el paciente queda disponible para búsquedas futuras
+
+---
+
+## 2. Flujo: crear expediente para paciente existente
+
+1. el usuario busca al paciente
+2. entra al perfil o detalle del paciente
+3. selecciona crear expediente
+4. captura información general
+5. registra RX anterior
+6. registra historial visual y médico
+7. registra RX actual
+8. registra observaciones, tipo de lente y datos del armazón
+9. guarda el expediente
+10. el expediente queda asociado al paciente
+
+---
+
+## 3. Flujo: registrar venta asociada a expediente
+
+1. el usuario localiza al paciente o expediente
+2. inicia una nueva venta
+3. agrega conceptos o productos
+4. captura subtotal, descuentos si existen, total y anticipo
+5. selecciona método de pago
+6. registra fecha de entrega si aplica
+7. guarda la venta
+8. el sistema calcula saldo pendiente
+9. la venta queda disponible para consulta y seguimiento
+
+---
+
+## 4. Flujo: registrar producto en inventario
+
+1. el usuario entra al módulo de inventario
+2. selecciona agregar producto
+3. define categoría
+4. captura nombre, marca, modelo y precios
+5. define existencias iniciales
+6. guarda el producto
+7. el producto queda disponible para consulta o venta
+
+---
+
+## 5. Flujo: crear cita
+
+1. el usuario entra al módulo de citas
+2. selecciona crear cita
+3. busca o selecciona paciente
+4. define fecha y hora
+5. agrega motivo y notas
+6. guarda la cita
+7. la cita queda registrada con un estatus inicial
+
+---
+
+## 6. Flujo: entregar trabajo o venta
+
+1. el usuario localiza la venta pendiente
+2. revisa saldo
+3. registra pago final si aplica
+4. actualiza estatus a entregada
+5. registra observación final si es necesario
+6. el sistema conserva el historial de la operación
