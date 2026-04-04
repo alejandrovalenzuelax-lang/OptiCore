@@ -137,6 +137,16 @@ class SalePayment(models.Model):
     method = models.CharField(max_length=20, choices=METHOD_CHOICES)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
     paid_at = models.DateTimeField(auto_now_add=True)
+    
+    def save(self, *args, **kwargs):
+        if self.sale_id:
+            current_paid = self.sale.payments.exclude(pk=self.pk).aggregate(total=Sum("amount"))["total"] or 0
+            new_total_paid = current_paid + (self.amount or 0)
+
+            if new_total_paid > (self.sale.total or 0):
+                raise ValidationError("El pago excede el total de la venta.")
+
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f"{self.method} - {self.amount}"
