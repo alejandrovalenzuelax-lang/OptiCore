@@ -1,5 +1,7 @@
 from django.db import models
 from django.db.models import Sum
+from django.db.models.signals import post_delete
+from django.dispatch import receiver
 
 class Sale(models.Model):
     STATUS_CHOICES = (
@@ -41,7 +43,7 @@ class Sale(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
-    
+
     def update_totals(self):
         items_total = self.items.aggregate(total=Sum("total_price"))["total"] or 0
         self.subtotal = items_total
@@ -59,7 +61,7 @@ class SaleItem(models.Model):
     quantity = models.IntegerField(default=1)
     unit_price = models.DecimalField(max_digits=10, decimal_places=2)
     total_price = models.DecimalField(max_digits=10, decimal_places=2)
-    
+
     def save(self, *args, **kwargs):
         self.total_price = (self.unit_price or 0) * (self.quantity or 0)
         super().save(*args, **kwargs)
@@ -85,3 +87,9 @@ class SalePayment(models.Model):
 
     def __str__(self):
         return f"{self.method} - {self.amount}"
+
+
+@receiver(post_delete, sender=SaleItem)
+def update_sale_totals_on_delete(sender, instance, **kwargs):
+    if instance.sale_id:
+        instance.sale.update_totals()
