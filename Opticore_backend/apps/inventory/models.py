@@ -7,6 +7,7 @@ class Product(models.Model):
         ("lens", "Lens"),
         ("accessory", "Accessory"),
         ("service", "Service"),
+        ("package", "Package"),
     )
 
     optic = models.ForeignKey(

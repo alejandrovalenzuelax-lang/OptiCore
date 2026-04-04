@@ -92,8 +92,8 @@ class SaleItem(models.Model):
 
         super().save(*args, **kwargs)
 
-        # stock (solo si no es servicio)
-        if self.product.type != "service":
+        # stock (solo si no es servicio o un paquete)
+        if self.product.type not in ["service", "package"]:
             delta = (self.quantity or 0) - (prev_qty or 0)
             new_stock = (self.product.stock or 0) - delta
 
@@ -130,7 +130,7 @@ class SalePayment(models.Model):
 
 @receiver(post_delete, sender=SaleItem)
 def update_sale_totals_on_delete(sender, instance, **kwargs):
-    if instance.product.type != "service":
+    if instance.product.type not in ["service", "package"]:
         instance.product.stock = (instance.product.stock or 0) + (instance.quantity or 0)
         instance.product.save(update_fields=["stock"])
 
