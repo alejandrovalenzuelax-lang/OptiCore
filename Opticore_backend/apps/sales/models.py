@@ -1,4 +1,5 @@
 from django.db import models
+from django.db.models import Sum
 
 class Sale(models.Model):
     STATUS_CHOICES = (
@@ -40,6 +41,12 @@ class Sale(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    
+    def update_totals(self):
+        items_total = self.items.aggregate(total=Sum("total_price"))["total"] or 0
+        self.subtotal = items_total
+        self.total = max(self.subtotal - (self.discount or 0), 0)
+        self.save(update_fields=["subtotal", "total"])
 
     def __str__(self):
         return f"Sale #{self.id} - {self.optic.name}"
@@ -52,6 +59,12 @@ class SaleItem(models.Model):
     quantity = models.IntegerField(default=1)
     unit_price = models.DecimalField(max_digits=10, decimal_places=2)
     total_price = models.DecimalField(max_digits=10, decimal_places=2)
+    
+    def save(self, *args, **kwargs):
+        self.total_price = (self.unit_price or 0) * (self.quantity or 0)
+        super().save(*args, **kwargs)
+        if self.sale_id:
+            self.sale.update_totals()
 
     def __str__(self):
         return f"{self.product.name} x {self.quantity}"
