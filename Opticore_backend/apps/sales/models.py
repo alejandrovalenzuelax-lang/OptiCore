@@ -1,6 +1,6 @@
 from django.db import models
 from django.db.models import Sum
-from django.db.models.signals import post_delete
+from django.db.models.signals import post_delete, post_save
 from django.dispatch import receiver
 from django.core.exceptions import ValidationError
 
@@ -39,6 +39,8 @@ class Sale(models.Model):
     subtotal = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     discount = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    paid_total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    pending_total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
 
     cost_total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
     profit = models.DecimalField(max_digits=10, decimal_places=2, default=0)
@@ -48,6 +50,17 @@ class Sale(models.Model):
 
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    
+    def update_payment_totals(self):
+        paid = self.payments.aggregate(total=Sum("amount"))["total"] or 0
+        self.paid_total = paid
+        self.pending_total = max(self.total - self.paid_total, 0)
+        
+        #opcional: auto-cambiar status
+        if self.pending_total == 0 and self.total > 0:
+            self.status = "paid"
+        
+        self.save(update_fields=["paid_total", "pending_total", "status"])
 
     def update_totals(self):
         items_total = self.items.aggregate(total=Sum("total_price"))["total"] or 0
@@ -57,6 +70,7 @@ class Sale(models.Model):
         self.total = max(self.subtotal - (self.discount or 0), 0)
         self.cost_total = cost_total
         self.profit = self.total - self.cost_total
+        self.update_payment_totals()  # recalcula pagos pendientes y pagados
 
         self.save(update_fields=["subtotal", "total", "cost_total", "profit"])
 
@@ -136,3 +150,14 @@ def update_sale_totals_on_delete(sender, instance, **kwargs):
 
     if instance.sale_id:
         instance.sale.update_totals()
+        
+
+@receiver(post_save, sender=SalePayment)
+def update_sale_totals_on_payment(sender, instance, **kwargs):
+    if instance.sale_id:
+        instance.sale.update_payment_totals()
+        
+@receiver(post_delete, sender=SalePayment)
+def update_sale_totals_on_payment_delete(sender, instance, **kwargs):
+    if instance.sale_id:
+        instance.sale.update_payment_totals()
