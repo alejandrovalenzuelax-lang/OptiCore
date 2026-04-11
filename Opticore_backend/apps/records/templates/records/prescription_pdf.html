@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8" />
+    <style>
+        body { font-family: Arial, sans-serif; font-size: 12px; color: #222; }
+        .header { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-weight: bold; font-size: 18px; }
+        .line { border-top: 2px solid #f08a24; margin: 6px 0 2px; }
+        .line-dark { border-top: 1px solid #000; margin-bottom: 12px; }
+        .row { display: flex; justify-content: space-between; }
+        .center { text-align: center; }
+        .signature-line { margin-top: 12px; border-top: 1px solid #000; width: 200px; display: inline-block; }
+        .footer { position: fixed; bottom: 20px; width: 100%; font-size: 10px; text-align: center; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">
+            {% if optic.logo_url %}
+                <img src="{{ optic.logo_url }}" alt="logo" height="40">
+            {% else %}
+                {{ optic.name }}
+            {% endif %}
+        </div>
+        <div>{{ date }}</div>
+    </div>
+    <div class="line"></div>
+    <div class="line-dark"></div>
+
+    <div class="row">
+        <div><strong>{{ patient.first_name }} {{ patient.last_name }}</strong></div>
+        {% if patient_age %}<div><strong>EDAD: {{ patient_age }}</strong></div>{% endif %}
+    </div>
+
+    {% if prescription.visual_acuity_without_lenses_od or prescription.visual_acuity_without_lenses_oi %}
+    <div class="row">
+        <div>Agudeza visual SIN LENTES</div>
+        <div>
+            OD {{ prescription.visual_acuity_without_lenses_od }} &nbsp;&nbsp;
+            OI {{ prescription.visual_acuity_without_lenses_oi }}
+        </div>
+    </div>
+    {% endif %}
+
+    {% if prescription.visual_acuity_with_lenses_od or prescription.visual_acuity_with_lenses_oi or prescription.visual_acuity_with_lenses_ao %}
+    <div class="row">
+        <div>Agudeza visual CON LENTES</div>
+        <div>
+            OD {{ prescription.visual_acuity_with_lenses_od }}
+            &nbsp;&nbsp; OI {{ prescription.visual_acuity_with_lenses_oi }}
+            {% if prescription.visual_acuity_with_lenses_ao %}A/O {{ prescription.visual_acuity_with_lenses_ao }}{% endif %}
+        </div>
+    </div>
+    {% endif %}
+
+    {% if prescription.rx_od_sph or prescription.rx_oi_sph %}
+    <div class="row">
+        <div>RX</div>
+        <div>
+            OD {{ prescription.rx_od_sph }} {{ prescription.rx_od_cyl }}x{{ prescription.rx_od_axis }}
+            &nbsp;&nbsp; OI {{ prescription.rx_oi_sph }} {{ prescription.rx_oi_cyl }}x{{ prescription.rx_oi_axis }}
+        </div>
+    </div>
+    {% if prescription.rx_add %}
+        <div class="center">Add {{ prescription.rx_add }}</div>
+    {% endif %}
+    {% endif %}
+
+    {% if prescription.diagnosis %}
+        <div class="center">{{ prescription.diagnosis }}</div>
+    {% endif %}
+
+    {% if prescription.lens_type %}
+        <div>TIPO DE MICA: {{ prescription.lens_type }}</div>
+    {% endif %}
+
+    <div class="signature" style="margin-top:40px;text-align:center;">
+        {% if prescription.optometrist %}
+            OPT. {{ prescription.optometrist.get_full_name }}
+        {% endif %}
+        <br>
+        {% if prescription.signature %}
+            <img src="{{ prescription.signature }}" height="35"/><br>
+        {% endif %}
+        <div class="signature-line"></div>
+    </div>
+
+    <div class="footer">
+        {% if optic.address %}{{ optic.address }}{% endif %}
+        {% if optic.city %} {{ optic.city }}{% endif %}
+        {% if optic.state %} {{ optic.state }}{% endif %}
+        {% if optic.postal_code %} {{ optic.postal_code }}{% endif %}
+        {% if optic.phone %} &nbsp;&nbsp; TEL: {{ optic.phone }}{% endif %}
+        {% if optic.email %} &nbsp;&nbsp; {{ optic.email }}{% endif %}
+    </div>
+</body>
+</html>
